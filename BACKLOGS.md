@@ -1,0 +1,57 @@
+### BACKLOGS
+
+- **En tant qu'utilisateur je veux accéder à mon espace**
+  - Affichage de la page de connexion
+  - Validation des information (email, mot de passe)
+  - Verification de l'existance des informations
+  - Connexion de l'utilisateur et retour sur la page l'accueil
+  - En cas de non validation ou que les informations n'existent pas
+    - Ajouter le message **Email ou Mot de passe incorrect.**
+    - Le redirigé sur la page de login
+- **En tant qu'utilisateur, lorsque je ne suis pas connecté, je souhaite pouvoir m'inscrir.** 
+  - Affichage de la page d'inscription
+  - Validation des information (nom, email, mot de passe)
+  - Verification de l'existance des informations
+  - Connexion de l'utilisateur et retour sur la page l'accueil
+  - En cas de non validation ou que les informations esiste
+    - Ajouter le message **Cette utilisateur existe déjà**
+    - Le redirigé sur la page de login
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite avoir la possibilité de me déconnecté.**
+  - Affichage du lien de deconnexion
+  - Le clique sur le lien doit lancer l'action de déconnexion
+  - Rédirection de l'utilisateur sur la page de login
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite avoir directement la liste de mes volontaires.**
+  - Affichage de volontaire par date de création
+  - Pour chaque volontaire ajouter les boutons de "delete" et "view"
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite ajouter d'autre volontaire et en supprimer.** 
+  - Affichage de bouton "ajouter un volontaire"
+  - Au clique ouvrir le modal et possibilité de renseigner les informations du volontaire
+  - Envoie des informations pour validation
+  - Enregistrement du volontaire dans la liste de volontaire de l'utilisateur
+  - On rédirige l'utilisateur sur la page précédente
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite supprimer des volonataires.**
+  - Affichage de bouton "supprimer" du volontaire à supprimer
+  - Au clique sur le bouton "supprimer" on envoie des informations pour validation (**id** du volontaire)
+  - Recherche le volontaire par son **id** et suppression du volontaire
+  - On rédirige l'utilisateur sur la page précédente
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite ajouter des taches à mes volontaires.**
+  - Affichage de bouton "Détail"
+  - Au clique sur bouton "Détail", on affiche la page qui montre les détails sur le volontaire
+  - On affiche la liste des taches précédament ajoutés
+  - Affichage du formulaire d'ajout de tache
+  - Envoie de la tache
+  - Validation de la tache
+  - Enregistrement de la tache pour le volontaire
+  - Rédirection de l'utilisateur sur la page précédente
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite supprimer des taches à mes volontaires.**
+  - On affiche la liste des taches précédament ajoutés
+  - Affichage de bouton "x"
+  - On envoie les informations (**id** du volontaire et **id** de la tache)
+  - Validation des informations envoie. Cas de:
+      - Validation erronée, rédirection sur la page précédente avec un message informatif de l'action
+      - Validation réussie, supprimer la tache et rédirection sur la page précédente avec un message informatif de l'action
+- **En tant qu'utilisateur, lorsque je suis connecté, je souhaite faire des recherches sur mes volontaires.**
+  - Affichage u champ de recherche
+  - Après saisir de l'information recherché:
+    - Envoie de l'information puis validation
+    - Affiche des volontaires dont le nom est en conformité avec l'information saisi
