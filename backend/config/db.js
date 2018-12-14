@@ -1,18 +1,10 @@
-// var mysql      = require('mysql');
-// var connection = mysql.createPool({
-//     host     : 'localhost',
-//     user     : 'root',
-//     password : '',
-//     database : 'trackers'
-// });
+var mysql      = require('mysql');
 var mysqlModel = require('mysql-model');
 
 var connection = mysqlModel.createConnection({
     host     : 'localhost',
     user     : 'root',
     password : '',
-    database : 'trackers',
-  });
-
-
+    database : 'trackers'
+});
 module.exports=connection;

@@ -5,6 +5,7 @@ import { Menu } from './Menu.js'
 
 // routes config
 import routes from '../routes';
+import Ajout from '../views/volontaire/Ajout.js';
 
 export class DefaultLayout extends Component {
 
@@ -26,6 +27,9 @@ export class DefaultLayout extends Component {
             <hr/>
 
             <div>FIN MENU</div>
+
+                        {/* <Ajout /> */}
+
 
             
 

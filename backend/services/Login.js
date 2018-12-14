@@ -1,22 +1,41 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-router.use(bodyParser.json());
-var Login = require('../dao/Login');
+const express = require('express');
+// const router = express.Router();
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+
+// const cors = require('cors')
+
+// router.use(cors);
+// router.use(bodyParser.json());
+ var Login = require('../dao/Login');
 
 
-router.get('/', function (req, res) {
+
+
+const logger = require('morgan');
+
+const app = express();
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
+
+
+
+app.get('/', function (req, res) {
     res.setHeader('Content-Type', 'application/json;charset=UTF-8');
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
+
     Login.getVolontaire(function(err,rows){
         if(err) {
             res.status(400).json(err);
@@ -28,29 +47,83 @@ router.get('/', function (req, res) {
     });
 });
 
-
-router.post('/', function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
+  /**
+ * Action de login
+ *
+ * Contact via la methode POST
+ */
+app.post('/', (req, res, next) => {
     const { email, password } = req.body;
+    // console.log('password OK OK');
+    // console.log(password);
+    // console.log(email);
 
-    if(!email || !password) {
-        return res.status(400).json('Email ou mot de passe invalide');
+  
+    // On vérifie l"email est correct
+    if (typeof email === 'undefined') {
+    //   req.session.flash = {
+    //     error: true,
+    //     message: 'Email est vide!'
+    //   };
+  
+      // return res.redirect('/login');
+      return res.status(204).json('Email vide');
     }
+  
+    const connexion = require('../config/connexion');
+  
+    connexion.query('SELECT * FROM users WHERE email = ? LIMIT 1', [connexion.escape(email)], (err, resultat) => {
+      // On vérifie s'il y a pas d'erreur
+       const user = resultat[0];
+    //   console.log('BD*******');
+    //   console.log(user);
+    //   console.log(resultat);
+    //   console.log('*******');
 
-    Login.getOneVolontaire(req.body,function(err,count){
-        if(err)
-        {
-            console.log('ERREUR POST');
-            res.status(400).json(err);
-        }
-        else{
-            res.json(req.body);
-        }
+    //   console.log(resultat[0]);
+    //   console.log(user.password);
+
+
+
+
+      
+      if (err || typeof user == 'undefined') {
+        // req.session.flash = {
+        //   error: true,
+        //   message: 'Email or password error !'
+        // };
+  
+        //return res.redirect('/login');
+        return res.status(204).json('Email ou password incorrect');
+
+
+      }
+  
+      // On compare le mot de passe de l'utilisateur
+      if (!bcrypt.compareSync(connexion.escape(password), user.password)) {
+        // req.session.flash = {
+        //   error: true,
+        //   message: 'Email or Password error !'
+        // };
+  
+        // return res.redirect('/login');
+        return res.status(204).json('Email ou mot de passe incorrect');
+
+
+      }
+  
+      // Changement de la session de l'utilisateur
+      // user.name = user.name.trim("'");
+      // req.session.user = user;
+  
+      // return res.redirect('/');
+
+      return res.status(200).json(user);
+
     });
-});
+  });
+  
 
-module.exports = router;
+
+
+module.exports = app;

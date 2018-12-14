@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-const service = (process.env.ENV_SERVER || 'app');
-const app = require('../server/' + service);
+const service = (process.env.ENV_SERVICE || 'app');
+const app = require('../services/' + service);
 const debug = require('debug')('projet:server');
 const http = require('http');
 
@@ -13,8 +13,8 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var PORT = normalizePort(process.env.PORT || '3000');
+app.set('port', PORT);
 /**
  * Create HTTP server.
  */
@@ -23,7 +23,7 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => {
+server.listen(PORT, () => {
   const date = (new Date);
   console.log(service.toUpperCase(), 'service, start at ', date.toISOString())
 });
